@@ -5,53 +5,22 @@
  */
 package Controller;
 
-
+import DBContext.AccountDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import Entity.Account;
 
 /**
  *
- * @author BK
+ * @author Bk
  */
-@WebServlet(name = "SearchController", urlPatterns = {"/patient/search"})
-public class SearchController extends HttpServlet {
+public class LoginController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-        //DoctorDBContext db = new DoctorDBContext();
-        //ArrayList<Doctor> docs = db.GetDocs(); //Get list of doctors
-        //request.setAttribute("docs", docs); // Embed current doctor list to docs value
-
-        String raw_did = request.getParameter("did");
-        //If raw_did received in null (first time running)
-        if (raw_did == null || raw_did.trim().length() == 0) {
-            raw_did = "-1";
-        }
-        int did = Integer.parseInt(raw_did);
-
-       // PatientDBContext patients = new PatientDBContext();
-       // ArrayList<Patient> pts = patients.GetPatients(did); //Get list of patients
-        //request.setAttribute("pts", pts); //Embed current patients list to pts value
-        request.setAttribute("did", did); //Embed current did to did value
-
-        request.getRequestDispatcher("/view/patient/Search.jsp").forward(request, response); // Forward to Search.jsp
-    }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -65,7 +34,7 @@ public class SearchController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("/login.jsp").forward(request, response);
     }
 
     /**
@@ -79,7 +48,20 @@ public class SearchController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        AccountDBContext db = new AccountDBContext();
+        Account account = db.getAccount(username, password);
+        if(account == null)
+        {
+            request.getSession().setAttribute("account", null);
+            response.getWriter().println("login failed!");
+        }
+        else
+        {
+            request.getSession().setAttribute("account", account);
+            response.getWriter().println("login succesful!");
+        }
     }
 
     /**

@@ -29,6 +29,10 @@ public abstract class BaseAuthController extends HttpServlet {
             return false;
         else
         {
+            String url = request.getServletPath();
+            AccountDBContext db = new AccountDBContext();
+            //int permission = db.getPermission(account.getUsername(), url);
+            //return permission > 0
             return true;
         }
     }

@@ -14,19 +14,19 @@ import java.sql.Date;
  * @author BK
  */
 public class Order {
-    private String Invoice_ID;
+    private String invoice_id;
     private Company c;
     private Product p;
-    private int Amount;
-    private float Cost;
-    private Date ImportDate;
+    private int amount;
+    private float cost;
+    private Date importDate;
 
-    public String getInvoice_ID() {
-        return Invoice_ID;
+    public String getInvoice_id() {
+        return invoice_id;
     }
 
-    public void setInvoice_ID(String Invoice_ID) {
-        this.Invoice_ID = Invoice_ID;
+    public void setInvoice_id(String invoice_id) {
+        this.invoice_id = invoice_id;
     }
 
     public Company getC() {
@@ -46,29 +46,30 @@ public class Order {
     }
 
     public int getAmount() {
-        return Amount;
+        return amount;
     }
 
-    public void setAmount(int Amount) {
-        this.Amount = Amount;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     public float getCost() {
-        return Cost;
+        return cost;
     }
 
-    public void setCost(float Cost) {
-        this.Cost = Cost;
+    public void setCost(float cost) {
+        this.cost = cost;
     }
 
     public Date getImportDate() {
-        return ImportDate;
+        return importDate;
     }
 
-    public void setImportDate(Date ImportDate) {
-        this.ImportDate = ImportDate;
+    public void setImportDate(Date importDate) {
+        this.importDate = importDate;
     }
 
+    
 
     
 }

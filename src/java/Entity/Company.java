@@ -10,24 +10,25 @@ package Entity;
  * @author BK
  */
 public class Company {
-    private String CompanyID;
-    private String Company;
+    private String companyid;
+    private String company;
 
-    public String getCompanyID() {
-        return CompanyID;
+    public String getCompanyid() {
+        return companyid;
     }
 
-    public void setCompanyID(String CompanyID) {
-        this.CompanyID = CompanyID;
+    public void setCompanyid(String companyid) {
+        this.companyid = companyid;
     }
 
     public String getCompany() {
-        return Company;
+        return company;
     }
 
-    public void setCompany(String Company) {
-        this.Company = Company;
+    public void setCompany(String company) {
+        this.company = company;
     }
-    
+
+
     
 }

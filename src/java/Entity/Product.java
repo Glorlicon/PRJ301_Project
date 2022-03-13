@@ -10,33 +10,34 @@ package Entity;
  * @author BK
  */
 public class Product {
-    private String ProductID;
-    private String ProductName;
-    private int Stock;
+    private String productid;
+    private String productname;
+    private int stock;
 
-    public String getProductID() {
-        return ProductID;
+    public String getProductid() {
+        return productid;
     }
 
-    public void setProductID(String ProductID) {
-        this.ProductID = ProductID;
+    public void setProductid(String productid) {
+        this.productid = productid;
     }
 
-    public String getProductName() {
-        return ProductName;
+    public String getProductname() {
+        return productname;
     }
 
-    public void setProductName(String ProductName) {
-        this.ProductName = ProductName;
+    public void setProductname(String productname) {
+        this.productname = productname;
     }
 
     public int getStock() {
-        return Stock;
+        return stock;
     }
 
-    public void setStock(int Stock) {
-        this.Stock = Stock;
+    public void setStock(int stock) {
+        this.stock = stock;
     }
+
     
     
 }

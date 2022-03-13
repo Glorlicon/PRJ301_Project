@@ -3,10 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/BK/OneDrive/Documents/NetBeansProjects/PRJ301_Workshop/web/view/product/insert.jsp</file>
             <file>file:/C:/Users/BK/OneDrive/Documents/NetBeansProjects/PRJ301_Workshop/src/java/Controller/SearchController.java</file>
             <file>file:/C:/Users/BK/OneDrive/Documents/NetBeansProjects/PRJ301_Workshop/src/java/Controller/BaseAuthController.java</file>
-            <file>file:/C:/Users/BK/OneDrive/Documents/NetBeansProjects/PRJ301_Workshop/web/js/scripts.js</file>
+            <file>file:/C:/Users/BK/OneDrive/Documents/NetBeansProjects/PRJ301_Workshop/src/java/Controller/Product/PInsertController.java</file>
+            <file>file:/C:/Users/BK/OneDrive/Documents/NetBeansProjects/PRJ301_Workshop/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/BK/OneDrive/Documents/NetBeansProjects/PRJ301_Workshop/src/java/DBContext/CompanyDBContext.java</file>
             <file>file:/C:/Users/BK/OneDrive/Documents/NetBeansProjects/PRJ301_Workshop/web/home.jsp</file>
+            <file>file:/C:/Users/BK/OneDrive/Documents/NetBeansProjects/PRJ301_Workshop/src/java/Entity/Product.java</file>
         </group>
     </open-files>
 </project-private>

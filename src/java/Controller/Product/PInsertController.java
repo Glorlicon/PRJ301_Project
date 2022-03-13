@@ -3,15 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package Controller.Product;
 
+import Controller.BaseAuthController;
+import DBContext.AccountDBContext;
+import DBContext.CompanyDBContext;
 import DBContext.OrderDBContext;
-import Entity.Order;
+import DBContext.ProductDBContext;
+import Entity.Account;
+import Entity.Company;
+import Entity.Product;
+import com.sun.xml.rpc.processor.modeler.j2ee.xml.string;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,8 +27,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author BK
  */
-@WebServlet(name = "SearchController", urlPatterns = {"/product/search"})
-public class SearchController extends HttpServlet {
+public class PInsertController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,30 +40,38 @@ public class SearchController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int page = 1;
-        int recordsPerPage = 10;
-        if (request.getParameter("page") != null) {
-            page = Integer.parseInt(request.getParameter("page"));
+        String[] company = request.getParameterValues("company");
+        String[] product = request.getParameterValues("product");
+        String[] amount = request.getParameterValues("amount");
+        int[] amounts = new int[10];
+        for (int i = 0; i < amount.length; i++) {
+            amounts[i] = Integer.parseInt(amount[i]);
         }
-
+        String[] price = request.getParameterValues("price");
+        float[] prices = new float[10];
+        for (int i = 0; i < price.length; i++) {
+            prices[i] = Float.parseFloat(price[i]);
+        }
+        String[] date = request.getParameterValues("importdate");
         OrderDBContext odb = new OrderDBContext();
-        ArrayList<Order> orders = odb.OrderPaging(page, recordsPerPage);
+        int OrderNo = odb.GetNoOfRecord();
+        AccountDBContext adb = new AccountDBContext();
+        String InvoiceID = null;
 
-        String raw_did = request.getParameter("did");
-
-        if (raw_did == null || raw_did.trim().length() == 0) {
-            raw_did = "-1";
+        Account account = (Account) request.getSession().getAttribute("account");
+        String username = account.getUsername();
+        for (int i = 0; i < company.length; i++) {
+            if (OrderNo < 10) {
+                InvoiceID = "IN00" + String.valueOf(OrderNo);
+            } else if (OrderNo < 100) {
+                InvoiceID = "IN0" + String.valueOf(OrderNo);
+            } else if (OrderNo < 1000) {
+                InvoiceID = "IN" + String.valueOf(OrderNo);
+            }
+            adb.addAccountOrder(username, InvoiceID);
+            odb.AddOrder(InvoiceID, company[i], product[i], amounts[i], prices[i], Date.valueOf(date[i]));
         }
-        int did = Integer.parseInt(raw_did);
-        int noOfRecords = odb.GetNoOfRecord();
-        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
-        request.setAttribute("order", orders);
-        request.setAttribute("noOfPages", noOfPages);
-        request.setAttribute("currentPage", page);
-        request.setAttribute("did", did);
-
-        // response.getWriter().println(orders.get(0).getInvoice_ID());
-        request.getRequestDispatcher("/home.jsp").forward(request, response); // Forward to Search.jsp
+        response.getWriter().println("Product added succesful!");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -72,7 +86,13 @@ public class SearchController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        CompanyDBContext cdb = new CompanyDBContext();
+        ProductDBContext pdb = new ProductDBContext();
+        ArrayList<Company> company = cdb.GetCompany();
+        ArrayList<Product> product = pdb.GetProduct();
+        request.setAttribute("company", company);
+        request.setAttribute("product", product);
+        request.getRequestDispatcher("/view/product/insert.jsp").forward(request, response);
     }
 
     /**

@@ -40,22 +40,22 @@ public class SearchController extends HttpServlet {
             page = Integer.parseInt(request.getParameter("page"));
         }
 
-        OrderDBContext odb = new OrderDBContext();
-        ArrayList<Order> orders = odb.OrderPaging(page, recordsPerPage);
-
-        String raw_did = request.getParameter("did");
-
-        if (raw_did == null || raw_did.trim().length() == 0) {
-            raw_did = "-1";
+        String raw_ivd = request.getParameter("ivd");
+        if (raw_ivd == null || raw_ivd.trim().length() == 0) {
+            raw_ivd = "0";
         }
-        int did = Integer.parseInt(raw_did);
+        OrderDBContext odb = new OrderDBContext();
+        ArrayList<Order> orders = odb.OrderPaging(page, recordsPerPage, raw_ivd);
+
+        ArrayList<Order> invoiceid = odb.GetSerperateInvoice();
+
         int noOfRecords = odb.GetNoOfRecord();
         int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
         request.setAttribute("order", orders);
         request.setAttribute("noOfPages", noOfPages);
         request.setAttribute("currentPage", page);
-        request.setAttribute("did", did);
-
+        request.setAttribute("invoice", invoiceid);
+        request.setAttribute("ivd", raw_ivd);
         // response.getWriter().println(orders.get(0).getInvoice_ID());
         request.getRequestDispatcher("/home.jsp").forward(request, response); // Forward to Search.jsp
     }

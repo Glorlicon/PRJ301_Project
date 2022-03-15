@@ -19,7 +19,12 @@
         <link href="../css/styles.css" rel="stylesheet" />
         <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
-
+        <script>
+            function submitForm()
+            {
+                document.getElementById("frmSearch").submit();
+            }
+        </script
     </head>
     <body>
         <div class="d-flex" id="wrapper">
@@ -74,6 +79,17 @@
                                     <a href="insert" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Products</span></a>
                                 </div>
                             </div>
+                            <form action="search" method="GET" id="frmSearch">
+            Search By Invoice: 
+            <select name="ivd" onchange="submitForm();">
+                <option value="0">----SELECT A INVOICE----</option>
+                <c:forEach items="${requestScope.invoice}" var="v">
+                <option
+                    ${(v.invoice_id==requestScope.ivd)?"selected=\"selected\"":""}
+                    value="${v.invoice_id}">${v.invoice_id}</option>
+                </c:forEach>
+            </select>
+        </form>
                             <h1 class="mt-4">Product Table</h1>
                             <c:if test="${requestScope.order.size() gt 0}">
                                 <table class="table">
@@ -90,9 +106,9 @@
                                     <tbody>
                                         <c:forEach items="${requestScope.order}" var="o">
                                             <tr>
-                                                <td>${o.invoice_ID}</td>
-                                                <td>${o.c.companyID}</td>
-                                                <td>${o.p.productID}</td>
+                                                <td>${o.invoice_id}</td>
+                                                <td>${o.c.companyid}</td>
+                                                <td>${o.p.productid}</td>
                                                 <td>${o.amount}</td>
                                                 <td>${o.cost}</td>
                                                 <td><fmt:formatDate pattern = "yyyy/MMM/dd" 
@@ -121,7 +137,7 @@
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
+        <script src="../js/scripts.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script>pagger("containerbot",${requestScope.currentPage},${requestScope.noOfPages},3);</script>
         <script>

@@ -20,8 +20,6 @@ import Entity.Account;
  */
 public class LoginController extends HttpServlet {
 
-    
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -52,15 +50,14 @@ public class LoginController extends HttpServlet {
         String password = request.getParameter("password");
         AccountDBContext db = new AccountDBContext();
         Account account = db.getAccount(username, password);
-        if(account == null)
-        {
+        if (account == null) {
             request.getSession().setAttribute("account", null);
-            response.getWriter().println("login failed!");
-        }
-        else
-        {
+            request.setAttribute("message", "Invalid"); // Will be available as ${message}
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        } else {
             request.getSession().setAttribute("account", account);
             response.getWriter().println("login succesful!");
+            response.sendRedirect(request.getContextPath() + "/product/search");
         }
     }
 

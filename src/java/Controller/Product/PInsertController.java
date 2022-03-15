@@ -42,36 +42,41 @@ public class PInsertController extends HttpServlet {
             throws ServletException, IOException {
         String[] company = request.getParameterValues("company");
         String[] product = request.getParameterValues("product");
-        String[] amount = request.getParameterValues("amount");
+        String[] amount = request.getParameterValues("Amount");
         int[] amounts = new int[10];
         for (int i = 0; i < amount.length; i++) {
             amounts[i] = Integer.parseInt(amount[i]);
         }
-        String[] price = request.getParameterValues("price");
+        
+        
+        
+        String[] price = request.getParameterValues("Cost");
         float[] prices = new float[10];
         for (int i = 0; i < price.length; i++) {
             prices[i] = Float.parseFloat(price[i]);
         }
-        String[] date = request.getParameterValues("importdate");
+        String[] date = request.getParameterValues("Date");
         OrderDBContext odb = new OrderDBContext();
-        int OrderNo = odb.GetNoOfRecord();
+        int OrderNo = odb.GetNoOfInvoice();
         AccountDBContext adb = new AccountDBContext();
         String InvoiceID = null;
 
+        if (OrderNo < 10) {
+            InvoiceID = "IN00" + String.valueOf(OrderNo);
+        } else if (OrderNo < 100) {
+            InvoiceID = "IN0" + String.valueOf(OrderNo);
+        } else if (OrderNo < 1000) {
+            InvoiceID = "IN" + String.valueOf(OrderNo);
+        }
+
         Account account = (Account) request.getSession().getAttribute("account");
         String username = account.getUsername();
+        adb.addAccountOrder(username, InvoiceID);
         for (int i = 0; i < company.length; i++) {
-            if (OrderNo < 10) {
-                InvoiceID = "IN00" + String.valueOf(OrderNo);
-            } else if (OrderNo < 100) {
-                InvoiceID = "IN0" + String.valueOf(OrderNo);
-            } else if (OrderNo < 1000) {
-                InvoiceID = "IN" + String.valueOf(OrderNo);
-            }
-            adb.addAccountOrder(username, InvoiceID);
+
             odb.AddOrder(InvoiceID, company[i], product[i], amounts[i], prices[i], Date.valueOf(date[i]));
         }
-        response.getWriter().println("Product added succesful!");
+        response.getWriter().println("Product added succesful!"); 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -33,4 +33,3 @@ function pagger(id,pageindex,totalpage,gap)
     
     container.innerHTML = result;
 }
-

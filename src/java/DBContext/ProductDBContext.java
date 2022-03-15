@@ -38,4 +38,28 @@ public class ProductDBContext extends DBContext{
         }
         return pro;
     }
+    
+    public ArrayList<Product> GetProductid(String companyid){
+        ArrayList<Product> pro = new ArrayList<>();
+        try {
+            String sql = "SELECT Product.ProductID, ProductName, Stock FROM Product INNER JOIN Company_Product \n"
+                    + "ON Product.ProductID = Company_Product.ProductID \n"
+                    + "WHERE CompanyID = ?";
+
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, companyid);
+            ResultSet rs = stm.executeQuery();
+            while(rs.next())
+            {
+                Product p = new Product();
+                p.setProductname(rs.getString("ProductName"));
+                p.setProductid(rs.getString("ProductID"));
+                p.setStock(rs.getInt("Stock"));
+                pro.add(p);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CompanyDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return pro;
+    }
 }

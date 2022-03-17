@@ -55,6 +55,7 @@ public class LoginController extends HttpServlet {
             request.getRequestDispatcher("/loginprocess.jsp").forward(request, response);
         } else {
             request.getSession().setAttribute("account", account);
+            request.setAttribute("url", request.getContextPath());
             request.getRequestDispatcher("/loginprocess.jsp").forward(request, response);
         }
     }

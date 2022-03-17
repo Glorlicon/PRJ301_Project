@@ -131,8 +131,8 @@ public class OrderDBContext extends DBContext {
         }
         return null;
     }
-    
-    public Order getOrder (String invoiceid, String companyid, String productid, int amount, float cost, Date importdate){
+
+    public Order getOrder(String invoiceid, String companyid, String productid, int amount, float cost, String importdate) {
         try {
             String sql = "SELECT FROM [Order]\n"
                     + "WHERE Invoice_ID = ? AND CompanyID = ? AND ProductID = ? AND Amount = ? AND Cost = ? AND ImportDate = ?";
@@ -142,7 +142,7 @@ public class OrderDBContext extends DBContext {
             stm.setString(3, productid);
             stm.setInt(4, amount);
             stm.setFloat(5, cost);
-            stm.setDate(6, importdate);
+            stm.setString(6, importdate);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 Order Or = new Order();
@@ -163,6 +163,44 @@ public class OrderDBContext extends DBContext {
             Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public void updateOrder(Order o) {
+        String sql = "UPDATE [Order]\n"
+                + "SET [CompanyID] = ?,\n"
+                + "	[ProductID] = ?,\n"
+                + "	[Amount] = ?,\n"
+                + "	[Cost] = ?,\n"
+                + "	[ImportDate] = ?\n"
+                + "	WHERE [Invoice_ID] = ?";
+        PreparedStatement stm = null;
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setString(1, o.getC().getCompanyid());
+            stm.setString(2, o.getP().getProductid());
+            stm.setInt(3, o.getAmount());
+            stm.setFloat(4, o.getCost());
+            stm.setString(5, o.getInvoice_id());
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
     }
 
 }

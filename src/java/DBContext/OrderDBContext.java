@@ -131,5 +131,38 @@ public class OrderDBContext extends DBContext {
         }
         return null;
     }
+    
+    public Order getOrder (String invoiceid, String companyid, String productid, int amount, float cost, Date importdate){
+        try {
+            String sql = "SELECT FROM [Order]\n"
+                    + "WHERE Invoice_ID = ? AND CompanyID = ? AND ProductID = ? AND Amount = ? AND Cost = ? AND ImportDate = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, invoiceid);
+            stm.setString(2, companyid);
+            stm.setString(3, productid);
+            stm.setInt(4, amount);
+            stm.setFloat(5, cost);
+            stm.setDate(6, importdate);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                Order Or = new Order();
+                Company Cp = new Company();
+                Product Pp = new Product();
+                Or.setInvoice_id(rs.getString("Invoice_ID"));
+                Cp.setCompanyid(rs.getString("CompanyID"));
+                Or.setC(Cp);
+                Pp.setProductid(rs.getString("ProductID"));
+                Or.setP(Pp);
+                Or.setAmount(rs.getInt("Amount"));
+                Or.setCost(rs.getFloat("Cost"));
+                Or.setImportDate(rs.getDate("ImportDate"));
+                return Or;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
 }

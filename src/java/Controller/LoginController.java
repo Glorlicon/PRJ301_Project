@@ -52,12 +52,10 @@ public class LoginController extends HttpServlet {
         Account account = db.getAccount(username, password);
         if (account == null) {
             request.getSession().setAttribute("account", null);
-            request.setAttribute("message", "Invalid"); // Will be available as ${message}
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("/loginprocess.jsp").forward(request, response);
         } else {
             request.getSession().setAttribute("account", account);
-            response.getWriter().println("login succesful!");
-            response.sendRedirect(request.getContextPath() + "/product/search");
+            request.getRequestDispatcher("/loginprocess.jsp").forward(request, response);
         }
     }
 

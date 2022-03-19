@@ -20,6 +20,12 @@
         <link href="css/styles.css" rel="stylesheet" />
         <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+        <script>
+            function submitForm()
+            {
+                document.getElementById("frmSearch").submit();
+            }
+        </script
     </head>
     <body>
         <div class="d-flex" id="wrapper">
@@ -34,9 +40,9 @@
                                 </c:if>
                                     <div class="list-group list-group-flush">
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" data-rel="1">Dashboard</a>
-                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="2">Shortcuts</a>
-                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="3">Overview</a>
-                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="4">Events</a>
+                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="2">Company</a>
+                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="3">Product</a>
+                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="4">Account</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="5">Profile</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="6">Status</a>
                         </ul>
@@ -121,27 +127,27 @@
                                                 <td><fmt:formatDate pattern = "yyyy/MMM/dd" 
                                                                 value = "${o.importDate}" /></td>
                                                         <c:if test="${requestScope.update gt 0}">
-                                                        <td><a href="update?ivd=${o.invoice_id}&cid=${o.c.companyid}&pid=${o.p.productid}&a=${o.amount}&c=${o.cost}&idate=${o.importDate}" class="btn btn-primary" data-toggle="modal"> Update </td>
+                                                        <td><a href="update?ivd=${o.invoice_id}&cid=${o.c.companyid}&pid=${o.p.productid}&a=${o.amount}&c=${o.cost}&idate=${o.importDate}" class="btn btn-primary" data-toggle="modal"> Update</td>
                                                     </c:if>
                                         <c:if test="${requestScope.delete gt 0}">
-                                        <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> Delete</button>
-                                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mymodal${o.invoice_id}${o.p.productid}${o.importDate}">Delete</button>
+                                        <div class="modal fade" id="mymodal${o.invoice_id}${o.p.productid}${o.importDate}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
+                                                                           <div class="modal-content">
+                                                                           <div class="modal-header">
+                                                                           <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                          </div>                                                
+                                                      <div class="modal-body">
                                                         Are you sure you want to delete this entry?
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Return</button>
                                                         <a href="delete?ivd=${o.invoice_id}&cid=${o.c.companyid}&pid=${o.p.productid}&a=${o.amount}&c=${o.cost}&idate=${o.importDate}" class="btn btn-primary" role="button">Delete</a>
                                                     </div>
                                                 </div>
                                             </div>
-                                            </div>
+                                        </div>
                                         </td>
                                     </c:if>
 
@@ -172,7 +178,6 @@
         <script src="../js/scripts.js"></script>
         <script src="js/scripts.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <script src="bootstrap.min.js"/>
         <script>pagger("containerbot",${requestScope.currentPage},${requestScope.noOfPages},3);</script>
         <script>
             

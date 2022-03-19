@@ -203,4 +203,43 @@ public class OrderDBContext extends DBContext {
 
     }
 
+    public void deleteOrder(Order o) {
+        String sql = "DELETE FROM [Order]\n"
+                + "WHERE [Invoice_ID] = ?,\n"
+                + "	[CompanyID] =?,\n"
+                + "	[ProductID] =?,\n"
+                + "	[Amount] = ?,\n"
+                + "	[Cost] = ?,\n"
+                + "	[ImportDate] = ?";
+        PreparedStatement stm = null;
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setString(1, o.getInvoice_id());
+            stm.setString(2, o.getC().getCompanyid());
+            stm.setString(3, o.getP().getProductid());
+            stm.setInt(4, o.getAmount());
+            stm.setFloat(5, o.getCost());
+            stm.setDate(6, o.getImportDate());
+            
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
 }

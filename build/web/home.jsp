@@ -17,6 +17,7 @@
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="../css/styles.css" rel="stylesheet" />
+        <link href="css/styles.css" rel="stylesheet" />
         <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
         <script>
@@ -31,12 +32,17 @@
             <!-- Sidebar-->
             <div class="border-end bg-white" id="sidebar-wrapper">
                 <nav>
-                    <div class="sidebar-heading border-bottom bg-light">Hello ${sessionScope.account.username}</div>
-                    <div class="list-group list-group-flush">
+                                <c:if test="${empty account}">
+                    <div class="sidebar-heading border-bottom bg-light">Please Login</div>
+                                </c:if>
+                                <c:if test="${not empty account}">
+                                    <div class="sidebar-heading border-bottom bg-light">Hello ${sessionScope.account.username}</div>
+                                </c:if>
+                                    <div class="list-group list-group-flush">
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" data-rel="1">Dashboard</a>
-                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="2">Shortcuts</a>
-                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="3">Overview</a>
-                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="4">Events</a>
+                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="2">Company</a>
+                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="3">Product</a>
+                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="4">Account</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="5">Profile</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="6">Status</a>
                         </ul>
@@ -53,7 +59,12 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                                 <li class="nav-item active"><a class="nav-link" href="#!">Home</a></li>
+                                 <c:if test="${empty account}">
                                 <li class="nav-item"><a class="nav-link" href="../login">Login</a></li>
+                                </c:if>
+                                     <c:if test="${not empty account}">
+                                         <li class="nav-item"><a class="nav-link" href="../login">Logout</a></li>
+                                         </c:if>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -76,7 +87,9 @@
                                     <h2>Manage <b>Products</b></h2>
                                 </div>
                                 <div class="col-sm-3">
-                                    <a href="insert" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Products</span></a>
+                                <c:if test="${requestScope.insert gt 0}">
+                                    <a href="insert" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Products</span></a>
+                                    </c:if>
                                 </div>
                             </div>
                             <form action="search" method="GET" id="frmSearch">
@@ -113,6 +126,31 @@
                                                 <td>${o.cost}</td>
                                                 <td><fmt:formatDate pattern = "yyyy/MMM/dd" 
                                                                 value = "${o.importDate}" /></td>
+                                                        <c:if test="${requestScope.update gt 0}">
+                                                        <td><a href="update?ivd=${o.invoice_id}&cid=${o.c.companyid}&pid=${o.p.productid}&a=${o.amount}&c=${o.cost}&idate=${o.importDate}" class="btn btn-primary" data-toggle="modal"> Update</td>
+                                                    </c:if>
+                                        <c:if test="${requestScope.delete gt 0}">
+                                        <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mymodal${o.invoice_id}${o.p.productid}${o.importDate}">Delete</button>
+                                        <div class="modal fade" id="mymodal${o.invoice_id}${o.p.productid}${o.importDate}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                                           <div class="modal-content">
+                                                                           <div class="modal-header">
+                                                                           <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                          </div>                                                
+                                                      <div class="modal-body">
+                                                        Are you sure you want to delete this entry?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Return</button>
+                                                        <a href="delete?ivd=${o.invoice_id}&cid=${o.c.companyid}&pid=${o.p.productid}&a=${o.amount}&c=${o.cost}&idate=${o.importDate}" class="btn btn-primary" role="button">Delete</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </td>
+                                    </c:if>
+
                                             </tr>
                                         </c:forEach>
                                     </tbody>
@@ -138,6 +176,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="../js/scripts.js"></script>
+        <script src="js/scripts.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script>pagger("containerbot",${requestScope.currentPage},${requestScope.noOfPages},3);</script>
         <script>

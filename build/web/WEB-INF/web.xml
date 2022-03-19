@@ -12,6 +12,14 @@
         <servlet-name>PInsertController</servlet-name>
         <servlet-class>Controller.Product.PInsertController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PUpdateController</servlet-name>
+        <servlet-class>Controller.Product.PUpdateController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PDeleteController</servlet-name>
+        <servlet-class>Controller.Product.PDeleteController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SearchController</servlet-name>
         <url-pattern>/product/search</url-pattern>
@@ -23,6 +31,14 @@
     <servlet-mapping>
         <servlet-name>PInsertController</servlet-name>
         <url-pattern>/product/insert</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PUpdateController</servlet-name>
+        <url-pattern>/product/update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PDeleteController</servlet-name>
+        <url-pattern>/product/delete</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

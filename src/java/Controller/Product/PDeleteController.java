@@ -3,22 +3,51 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package Controller.Product;
 
-import DBContext.AccountDBContext;
+import DBContext.OrderDBContext;
+import Entity.Order;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import Entity.Account;
 
 /**
  *
- * @author Bk
+ * @author BK
  */
-public class LoginController extends HttpServlet {
+public class PDeleteController extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String company = request.getParameter("company");
+        String product = request.getParameter("product");
+        String amount = request.getParameter("Amount");
+        Float price = Float.parseFloat(request.getParameter("Cost"));
+        Date date = Date.valueOf(request.getParameter("Date"));
+        OrderDBContext odb = new OrderDBContext();
+        String invoiceid = request.getParameter("vid");
+        Order o = new Order();
+        o.setInvoice_id(invoiceid);
+        o.getC().setCompanyid(company);
+        o.getP().setProductid(product);
+        o.setAmount(Integer.parseInt(amount));
+        o.setCost(price);
+        o.setImportDate(date);
+        odb.updateOrder(o);
+        }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -32,7 +61,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/login.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -46,18 +75,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        AccountDBContext db = new AccountDBContext();
-        Account account = db.getAccount(username, password);
-        if (account == null) {
-            request.getSession().setAttribute("account", null);
-            request.getRequestDispatcher("/loginprocess.jsp").forward(request, response);
-        } else {
-            request.getSession().setAttribute("account", account);
-            request.setAttribute("url", request.getContextPath());
-            request.getRequestDispatcher("/loginprocess.jsp").forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**

@@ -3,17 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package Controller.Product;
 
 import DBContext.AccountDBContext;
+import DBContext.CompanyDBContext;
 import DBContext.OrderDBContext;
+import DBContext.ProductDBContext;
 import Entity.Account;
+import Entity.Company;
 import Entity.Order;
+import Entity.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,8 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author BK
  */
-@WebServlet(name = "SearchController", urlPatterns = {"/product/search"})
-public class SearchController extends HttpServlet {
+public class PUpdateController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,42 +39,22 @@ public class SearchController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Account account = (Account) request.getSession().getAttribute("account");
-        String username = "";
-        if (account == null){
-            username = "";
-        } else username = account.getUsername();
-        
-        int page = 1;
-        int recordsPerPage = 10;
-        if (request.getParameter("page") != null) {
-            page = Integer.parseInt(request.getParameter("page"));
-        }
-
-        String raw_ivd = request.getParameter("ivd");
-        if (raw_ivd == null || raw_ivd.trim().length() == 0) {
-            raw_ivd = "0";
-        }
+        String company = request.getParameter("company");
+        String product = request.getParameter("product");
+        String amount = request.getParameter("Amount");
+        Float price = Float.parseFloat(request.getParameter("Cost"));
+        Date date = Date.valueOf(request.getParameter("Date"));
         OrderDBContext odb = new OrderDBContext();
-        AccountDBContext adb = new AccountDBContext();
-        ArrayList<Order> orders = odb.OrderPaging(page, recordsPerPage, raw_ivd);
-        int  update = adb.getPermission(username, "/product/update");
-        int  insert = adb.getPermission(username, "/product/insert");
-        int  delete = adb.getPermission(username, "/product/delete");
-        ArrayList<Order> invoiceid = odb.GetSerperateInvoice();
-        int noOfRecords = odb.GetNoOfRecord();
-        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
-        request.setAttribute("order", orders);
-        request.setAttribute("noOfPages", noOfPages);
-        request.setAttribute("currentPage", page);
-        request.setAttribute("invoice", invoiceid);
-        request.setAttribute("ivd", raw_ivd);
-        request.setAttribute("update", update);
-        request.setAttribute("insert", insert);
-        request.setAttribute("delete", delete);
-        request.setAttribute("account", account);
-         //response.getWriter().println(update);
-        request.getRequestDispatcher("/home.jsp").forward(request, response); // Forward to Search.jsp
+        String invoiceid = request.getParameter("vid");
+        Order o = new Order();
+        o.setInvoice_id(invoiceid);
+        o.getC().setCompanyid(company);
+        o.getP().setProductid(product);
+        o.setAmount(Integer.parseInt(amount));
+        o.setCost(price);
+        o.setImportDate(date);
+        odb.updateOrder(o);
+        response.getWriter().println("Product added succesful!"); 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -86,7 +69,29 @@ public class SearchController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        OrderDBContext odb = new OrderDBContext();
+        String invoiceid = request.getParameter("vid");
+        String companyid = request.getParameter("cid");
+        String productid = request.getParameter("pid");
+        int amount = Integer.parseInt(request.getParameter("a"));
+        float cost = Float.parseFloat(request.getParameter("c"));
+        String date = request.getParameter("idate");
+        Order o = odb.getOrder(invoiceid, companyid, productid, amount, cost, date);
+        request.setAttribute("order", o);
+        CompanyDBContext cdb = new CompanyDBContext();
+        ProductDBContext pdb = new ProductDBContext();
+        ArrayList<Company> company = cdb.GetCompany();
+        ArrayList<Product> product = pdb.GetProduct();
+        request.setAttribute("company", company);
+        request.setAttribute("product", product);
+        request.setAttribute("vid", invoiceid);
+        request.setAttribute("cid", companyid);
+        request.setAttribute("pid", productid);
+        request.setAttribute("a", amount);
+        request.setAttribute("c", cost);
+        request.setAttribute("idate", date);
+        
+        request.getRequestDispatcher("/view/product/update.jsp").forward(request, response);
     }
 
     /**
@@ -100,7 +105,7 @@ public class SearchController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
     }
 
     /**

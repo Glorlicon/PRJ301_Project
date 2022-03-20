@@ -74,6 +74,18 @@ public class AInsertController extends BaseAuthController {
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        String permission = request.getParameter("permission");
+        AccountDBContext adb = new AccountDBContext();
+        adb.addAccount(username, password);
+        if (permission.equalsIgnoreCase("admin")){
+            adb.addpermission(username, 2);
+        } else if (permission.equalsIgnoreCase("moderator")){
+            adb.addpermission(username, 3);
+        } else if (permission.equalsIgnoreCase("user")){
+            adb.addpermission(username, 4);
+        }
+        
+        response.sendRedirect(request.getContextPath() + "/search");
     }
 
     /**

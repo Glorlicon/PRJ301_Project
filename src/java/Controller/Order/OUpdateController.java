@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author BK
  */
-public class OUpdateController extends HttpServlet {
+public class OUpdateController extends BaseAuthController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,21 +40,7 @@ public class OUpdateController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String company = request.getParameter("company");
-        String productid = request.getParameter("pid");
-        String product = request.getParameter("product");
-        String amount = request.getParameter("Amount");
-        Float price = Float.parseFloat(request.getParameter("Cost"));
-        Date date = Date.valueOf(request.getParameter("Date"));
-        OrderDBContext odb = new OrderDBContext();
-        Order o = new Order();
-        o.getC().setCompanyid(company);
-        o.getP().setProductid(product);
-        o.setAmount(Integer.parseInt(amount));
-        o.setCost(price);
-        o.setImportDate(date);
-        odb.updateOrder(o, productid);
-        response.sendRedirect(request.getContextPath() + "/search");
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -67,17 +53,31 @@ public class OUpdateController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         OrderDBContext odb = new OrderDBContext();
-        String invoiceid = request.getParameter("vid");
+        String invoiceid = request.getParameter("ivd");
         String companyid = request.getParameter("cid");
         String productid = request.getParameter("pid");
         int amount = Integer.parseInt(request.getParameter("a"));
         float cost = Float.parseFloat(request.getParameter("c"));
         String date = request.getParameter("idate");
+        Date date1 = Date.valueOf(request.getParameter("idate"));
         Order o = odb.getOrder(invoiceid, companyid, productid, amount, cost, date);
         request.setAttribute("order", o);
+        
+        Order o2 = new Order();
+        Company c = new Company();
+        Product p = new Product();
+        c.setCompanyid(companyid);
+        p.setProductid(productid);
+        o2.setC(c);
+        o2.setP(p);
+        o2.setAmount(amount);
+        o2.setCost(cost);
+        o2.setImportDate(date1);
+        o2.setInvoice_id(invoiceid);
+        
         CompanyDBContext cdb = new CompanyDBContext();
         ProductDBContext pdb = new ProductDBContext();
         ArrayList<Company> company = cdb.GetCompany();
@@ -90,7 +90,7 @@ public class OUpdateController extends HttpServlet {
         request.setAttribute("a", amount);
         request.setAttribute("c", cost);
         request.setAttribute("idate", date);
-        
+        request.getSession().setAttribute("oldorder", o2);
         request.getRequestDispatcher("/view/order/update.jsp").forward(request, response);
     }
 
@@ -103,9 +103,28 @@ public class OUpdateController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String company = request.getParameter("company");
+        String product = request.getParameter("product");
+        String amount = request.getParameter("Amount");
+        Float price = Float.parseFloat(request.getParameter("Cost"));
+        Date date = Date.valueOf(request.getParameter("Date"));
+        Company c = new Company();
+        Product p = new Product();
+        OrderDBContext odb = new OrderDBContext();
+        Order o = new Order();
         
+        c.setCompanyid(company);
+        p.setProductid(product);
+        o.setC(c);
+        o.setP(p);
+        o.setAmount(Integer.parseInt(amount));
+        o.setCost(price);
+        o.setImportDate(date);
+        
+        odb.updateOrder(o,(Order) request.getSession().getAttribute("oldorder"));
+        response.sendRedirect(request.getContextPath() + "/search");
     }
 
     /**

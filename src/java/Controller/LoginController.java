@@ -32,22 +32,18 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String uri = (request.getQueryString() != null ? "?" + request.getQueryString() : "");
-        if (uri.equalsIgnoreCase("?")) {
-            String method = request.getParameter("method");
-            if (method.isEmpty() || method == null) {
-                response.sendRedirect("login.jsp");
-            } else {
+        String method = request.getParameter("method");
+        if(method == null || method.trim().length()==0)
+            method = "-1";
                 if (method.equalsIgnoreCase("logout")) {
                     request.getSession().setAttribute("account", null);
                     response.sendRedirect("search");
                     return;
                 }
+                response.sendRedirect("login.jsp");
             }
-        }
         
-        response.sendRedirect("login.jsp");
-    }
+        
 
     /**
      * Handles the HTTP <code>POST</code> method.

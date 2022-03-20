@@ -30,7 +30,7 @@
         <!-- copy of input fields group -->
         <div class="container" style="padding-top: 20px">
             <div class="row">
-                <form style="max-width:300px;margin:auto;"action="insert" method="POST"> 
+                <form style="max-width:300px;margin:auto;"action="update" method="POST"> 
 
                     <div class="form-group fieldGroup" style="padding-top:50px">
                         <div class="input-group mb-3">

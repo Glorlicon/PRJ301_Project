@@ -84,6 +84,7 @@ public class SearchController extends BaseAuthController {
         int  update = adb.getPermission(username, "/product/update");
         int  insert = adb.getPermission(username, "/product/insert");
         int  delete = adb.getPermission(username, "/product/delete");
+        int  aupdate = adb.getPermission(username, "/account/insert");
         ArrayList<Order> invoiceid = odb.GetSerperateInvoice();
         int onoOfRecords = odb.GetNoOfRecord();
         int cnoOfRecords = cdb.GetNoOfRecord();
@@ -112,6 +113,7 @@ public class SearchController extends BaseAuthController {
         request.setAttribute("update", update);
         request.setAttribute("insert", insert);
         request.setAttribute("delete", delete);
+        request.setAttribute("aupdate", aupdate);
         request.setAttribute("account", account);
          //response.getWriter().println(update);
         request.getRequestDispatcher("/home.jsp").forward(request, response); // Forward to Search.jsp

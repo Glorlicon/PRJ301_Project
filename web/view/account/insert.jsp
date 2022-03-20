@@ -39,21 +39,21 @@
                             <div class="input-group-prepend">
                                 <label class="input-group-text" for="inputGroupSelect01">Username</label>
                             </div>
-                            <label for="companyid" class='sr-only'>Company ID</label>
-                            <input type="text" class='form-control' placeholder='Company ID' name="companyid" require autofocus required>
+                            <label for="username" class='sr-only'>Company ID</label>
+                            <input type="text" class='form-control' placeholder='Username' name="username" require autofocus required>
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <label class="input-group-text" for="inputGroupSelect02">Password</label>
                             </div>
-                            <label for="companyname" class='sr-only'>Company Name</label>
-                            <input type="text" class='form-control' placeholder='Company Name' name="companyname" require autofocus required>
+                            <label for="password" class='sr-only'>Company Name</label>
+                            <input type="text" class='form-control' placeholder='Password' name="password" require autofocus required>
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <label class="input-group-text" for="inputGroupSelect01">Permission</label>
                             </div>
-                            <select class="custom-select" id="inputGroupSelect01" name="product" required>
+                            <select class="custom-select" id="inputGroupSelect01" name="permission" required>
 
                                 <option selected>Choose...</option>
                                 <option value="admin">Admin</option>

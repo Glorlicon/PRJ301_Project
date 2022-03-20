@@ -83,6 +83,21 @@ public class AccountDBContext extends DBContext {
         return -1;
     }
 
+    public Account addpermission(String username, int gid) {
+        try {
+            String sql = "INSERT INTO [GroupAccount] (username, gid)\n"
+                    + " VALUES (?, ?)";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, username);
+            stm.setInt(2, gid);
+            stm.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
     public Account addAccountOrder(String username, String invoiceid) {
         try {
             String sql = "INSERT INTO Account_Invoice (username, Invoice_ID)\n"
@@ -90,6 +105,21 @@ public class AccountDBContext extends DBContext {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, username);
             stm.setString(2, invoiceid);
+            stm.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public Account addAccount(String username, String password) {
+        try {
+            String sql = "INSERT INTO Account (username, password)\n"
+                    + " VALUES (?, ?)";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, username);
+            stm.setString(2, password);
             stm.executeUpdate();
 
         } catch (SQLException ex) {

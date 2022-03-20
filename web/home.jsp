@@ -43,8 +43,10 @@
            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="?rel=1&opage=${requestScope.ocurrentPage}&cpage=${requestScope.ccurrentPage}&ppage=${requestScope.pcurrentPage}&apage=${requestScope.acurrentPage}" data-rel="1">Dashboard</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="?rel=2&opage=${requestScope.ocurrentPage}&cpage=${requestScope.ccurrentPage}&ppage=${requestScope.pcurrentPage}&apage=${requestScope.acurrentPage}" data-rel="2">Company</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="?rel=3&opage=${requestScope.ocurrentPage}&cpage=${requestScope.ccurrentPage}&ppage=${requestScope.pcurrentPage}&apage=${requestScope.acurrentPage}" data-rel="3">Product</a>
+                        <c:if test="${requestScope.aupdate gt 0}">
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="?rel=4&opage=${requestScope.ocurrentPage}&cpage=${requestScope.ccurrentPage}&ppage=${requestScope.pcurrentPage}&apage=${requestScope.acurrentPage}" data-rel="4">Account</a>
-                        </ul>
+                                            </c:if>
+                            </ul>
                     </div>
                 </nav>
             </div>
@@ -272,7 +274,7 @@
                         </article>
                     </section>
                     
-                    
+                    <c:if test="${requestScope.aupdate gt 0}">
                     <section>
                         <article>
                         <div class="row">
@@ -324,6 +326,7 @@
                             
                         </article>
                     </section>
+        </c:if>
                 </div>
             </div>
         </div>

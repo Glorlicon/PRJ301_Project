@@ -3,22 +3,46 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package Controller.Account;
 
-import DBContext.AccountDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import Entity.Account;
 
 /**
  *
- * @author Bk
+ * @author BK
  */
-public class LoginController extends HttpServlet {
+public class AInsertController extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet AInsertController</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet AInsertController at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -32,12 +56,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getParameter("method").equalsIgnoreCase("logout")) {
-            request.getSession().setAttribute("account", null);
-            response.sendRedirect("order/search");
-            return;
-        }
-        request.getRequestDispatcher("/login.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -51,19 +70,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        AccountDBContext db = new AccountDBContext();
-        Account account = db.getAccount(username, password);
-        if (account == null) {
-            request.getSession().setAttribute("account", null);
-            request.getRequestDispatcher("/loginprocess.jsp").forward(request, response);
-        } else {
-            request.getSession().setAttribute("account", account);
-            request.setAttribute("url", request.getContextPath());
-            request.getRequestDispatcher("/loginprocess.jsp").forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**

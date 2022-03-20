@@ -3,12 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller.Product;
+package Controller.Order;
 
+import DBContext.AccountDBContext;
+import DBContext.CompanyDBContext;
+import DBContext.OrderDBContext;
 import DBContext.ProductDBContext;
+import Entity.Account;
+import Entity.Company;
+import Entity.Order;
 import Entity.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author BK
  */
-public class PInsertController extends HttpServlet {
+public class OUpdateController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,19 +39,22 @@ public class PInsertController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet PInsertController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet PInsertController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        String company = request.getParameter("company");
+        String product = request.getParameter("product");
+        String amount = request.getParameter("Amount");
+        Float price = Float.parseFloat(request.getParameter("Cost"));
+        Date date = Date.valueOf(request.getParameter("Date"));
+        OrderDBContext odb = new OrderDBContext();
+        String invoiceid = request.getParameter("vid");
+        Order o = new Order();
+        o.setInvoice_id(invoiceid);
+        o.getC().setCompanyid(company);
+        o.getP().setProductid(product);
+        o.setAmount(Integer.parseInt(amount));
+        o.setCost(price);
+        o.setImportDate(date);
+        odb.updateOrder(o);
+        response.sendRedirect("../order/search");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -59,10 +69,29 @@ public class PInsertController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDBContext cdb = new ProductDBContext();
-        ArrayList<Product> product = cdb.GetProduct();
+        OrderDBContext odb = new OrderDBContext();
+        String invoiceid = request.getParameter("vid");
+        String companyid = request.getParameter("cid");
+        String productid = request.getParameter("pid");
+        int amount = Integer.parseInt(request.getParameter("a"));
+        float cost = Float.parseFloat(request.getParameter("c"));
+        String date = request.getParameter("idate");
+        Order o = odb.getOrder(invoiceid, companyid, productid, amount, cost, date);
+        request.setAttribute("order", o);
+        CompanyDBContext cdb = new CompanyDBContext();
+        ProductDBContext pdb = new ProductDBContext();
+        ArrayList<Company> company = cdb.GetCompany();
+        ArrayList<Product> product = pdb.GetProduct();
+        request.setAttribute("company", company);
         request.setAttribute("product", product);
-        request.getRequestDispatcher("/view/product/insert.jsp").forward(request, response);
+        request.setAttribute("vid", invoiceid);
+        request.setAttribute("cid", companyid);
+        request.setAttribute("pid", productid);
+        request.setAttribute("a", amount);
+        request.setAttribute("c", cost);
+        request.setAttribute("idate", date);
+        
+        request.getRequestDispatcher("/view/order/update.jsp").forward(request, response);
     }
 
     /**
@@ -76,12 +105,7 @@ public class PInsertController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String productid = request.getParameter("productid");
-        String productname = request.getParameter("productname");
-
-        ProductDBContext cdb = new ProductDBContext();
-        cdb.addProduct(productid, productname);
-        response.sendRedirect("../search");
+        
     }
 
     /**

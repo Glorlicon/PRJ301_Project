@@ -3,19 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller.Product;
+package Controller.Company;
 
-import DBContext.AccountDBContext;
 import DBContext.CompanyDBContext;
-import DBContext.OrderDBContext;
 import DBContext.ProductDBContext;
-import Entity.Account;
 import Entity.Company;
-import Entity.Order;
 import Entity.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author BK
  */
-public class PUpdateController extends HttpServlet {
+public class CInsertController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,22 +34,19 @@ public class PUpdateController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String company = request.getParameter("company");
-        String product = request.getParameter("product");
-        String amount = request.getParameter("Amount");
-        Float price = Float.parseFloat(request.getParameter("Cost"));
-        Date date = Date.valueOf(request.getParameter("Date"));
-        OrderDBContext odb = new OrderDBContext();
-        String invoiceid = request.getParameter("vid");
-        Order o = new Order();
-        o.setInvoice_id(invoiceid);
-        o.getC().setCompanyid(company);
-        o.getP().setProductid(product);
-        o.setAmount(Integer.parseInt(amount));
-        o.setCost(price);
-        o.setImportDate(date);
-        odb.updateOrder(o);
-        response.getWriter().println("Product added succesful!"); 
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet CInsertController</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet CInsertController at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -69,29 +61,10 @@ public class PUpdateController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        OrderDBContext odb = new OrderDBContext();
-        String invoiceid = request.getParameter("vid");
-        String companyid = request.getParameter("cid");
-        String productid = request.getParameter("pid");
-        int amount = Integer.parseInt(request.getParameter("a"));
-        float cost = Float.parseFloat(request.getParameter("c"));
-        String date = request.getParameter("idate");
-        Order o = odb.getOrder(invoiceid, companyid, productid, amount, cost, date);
-        request.setAttribute("order", o);
         CompanyDBContext cdb = new CompanyDBContext();
-        ProductDBContext pdb = new ProductDBContext();
         ArrayList<Company> company = cdb.GetCompany();
-        ArrayList<Product> product = pdb.GetProduct();
         request.setAttribute("company", company);
-        request.setAttribute("product", product);
-        request.setAttribute("vid", invoiceid);
-        request.setAttribute("cid", companyid);
-        request.setAttribute("pid", productid);
-        request.setAttribute("a", amount);
-        request.setAttribute("c", cost);
-        request.setAttribute("idate", date);
-        
-        request.getRequestDispatcher("/view/product/update.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/company/insert.jsp").forward(request, response);
     }
 
     /**
@@ -105,7 +78,12 @@ public class PUpdateController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        String companyid = request.getParameter("companyid");
+        String companyname = request.getParameter("companyname");
+
+        CompanyDBContext cdb = new CompanyDBContext();
+        cdb.addCompany(companyid, companyname);
+        response.sendRedirect("../search");
     }
 
     /**

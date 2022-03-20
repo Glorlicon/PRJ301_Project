@@ -46,7 +46,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>SearchController</servlet-name>
-        <url-pattern>/order/search</url-pattern>
+        <url-pattern>/search</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -66,15 +66,15 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CInsertController</servlet-name>
-        <url-pattern>/order/company/insert</url-pattern>
+        <url-pattern>/company/insert</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CUpdateController</servlet-name>
-        <url-pattern>/order/company/update</url-pattern>
+        <url-pattern>/company/update</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CDeleteController</servlet-name>
-        <url-pattern>/order/company/delete</url-pattern>
+        <url-pattern>/company/delete</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PInsertController</servlet-name>

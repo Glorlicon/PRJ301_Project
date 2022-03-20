@@ -21,7 +21,7 @@
     <body>
         <nav class="navbar navbar-dark bg-primary">
             <a class="navbar-brand" href="#">
-                <img src="../../img/SRS2.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                <img src="../img/SRS2.png" width="30" height="30" class="d-inline-block align-top" alt="">
                 Adding Company
             </a>
             <a href="../search" class="btn btn-success my-2 my-sm-0" data-toggle="modal"> <span>Return</span></a>

@@ -24,17 +24,10 @@ public abstract class BaseAuthController extends HttpServlet {
 
     private boolean isAuthenticated(HttpServletRequest request)
     {
-        Account account = (Account) request.getSession().getAttribute("account");
-        if(account == null)
-            return false;
-        else
-        {
-            String url = request.getServletPath();
-            AccountDBContext db = new AccountDBContext();
-            //int permission = db.getPermission(account.getUsername(), url);
-            //return permission > 0
-            return true;
-        }
+       Account acc = (Account) request.getSession().getAttribute("account");
+       if (acc == null){
+           return false;
+       } else {return true;}
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -55,7 +48,7 @@ public abstract class BaseAuthController extends HttpServlet {
         }
         else
         {
-            response.getWriter().println("access denined!");
+            response.sendRedirect( request.getContextPath() + "/auth.jsp");
         }
     }
     protected abstract void processGet(HttpServletRequest request, HttpServletResponse response)
@@ -80,7 +73,7 @@ public abstract class BaseAuthController extends HttpServlet {
         }
         else
         {
-            response.getWriter().println("access denined!");
+            response.sendRedirect(request.getContextPath() + "/auth.jsp");
         }
     }
 

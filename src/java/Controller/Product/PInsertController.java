@@ -5,6 +5,7 @@
  */
 package Controller.Product;
 
+import Controller.BaseAuthController;
 import DBContext.ProductDBContext;
 import Entity.Product;
 import java.io.IOException;
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author BK
  */
-public class PInsertController extends HttpServlet {
+public class PInsertController extends BaseAuthController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -57,7 +58,7 @@ public class PInsertController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ProductDBContext cdb = new ProductDBContext();
         ArrayList<Product> product = cdb.GetProduct();
@@ -74,14 +75,14 @@ public class PInsertController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String productid = request.getParameter("productid");
         String productname = request.getParameter("productname");
 
         ProductDBContext cdb = new ProductDBContext();
         cdb.addProduct(productid, productname);
-        response.sendRedirect("../search");
+        response.sendRedirect("search");
     }
 
     /**

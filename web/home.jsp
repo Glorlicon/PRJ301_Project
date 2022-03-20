@@ -12,7 +12,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="Bk" />
-        <title>Simple Sidebar - Start Bootstrap Template</title>
+        <title>Weeb's Corp Invoice Management System</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -58,10 +58,10 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                                  <c:if test="${empty account}">
-                                <li class="nav-item"><a class="nav-link" href="../login?method=login">Login</a></li>
+                                <li class="nav-item"><a class="nav-link" href="login?method=login">Login</a></li>
                                 </c:if>
                                      <c:if test="${not empty account}">
-                                         <li class="nav-item"><a class="nav-link" href="../login?method=logout">Logout</a></li>
+                                         <li class="nav-item"><a class="nav-link" href="login?method=logout">Logout</a></li>
                                          </c:if>
                             </ul>
                         </div>
@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="col-sm-3">
                                 <c:if test="${requestScope.insert gt 0}">
-                                    <a href="insert" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Order</span></a>
+                                    <a href="order/insert" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Order</span></a>
                                     </c:if>
                                 </div>
                             </div>
@@ -116,7 +116,7 @@
                                                 <td><fmt:formatDate pattern = "yyyy/MMM/dd" 
                                                                 value = "${o.importDate}" /></td>
                                                         <c:if test="${requestScope.update gt 0}">
-                                                        <td><a href="update?ivd=${o.invoice_id}&cid=${o.c.companyid}&pid=${o.p.productid}&a=${o.amount}&c=${o.cost}&idate=${o.importDate}" class="btn btn-primary" data-toggle="modal"> Update</td>
+                                                        <td><a href="order/update?ivd=${o.invoice_id}&cid=${o.c.companyid}&pid=${o.p.productid}&a=${o.amount}&c=${o.cost}&idate=${o.importDate}" class="btn btn-primary" data-toggle="modal"> Update</td>
                                                     </c:if>
                                         <c:if test="${requestScope.delete gt 0}">
                                         <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mymodal${o.invoice_id}${o.p.productid}${o.importDate}">Delete</button>
@@ -132,7 +132,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Return</button>
-                                                        <a href="delete?ivd=${o.invoice_id}&cid=${o.c.companyid}&pid=${o.p.productid}&a=${o.amount}&c=${o.cost}&idate=${o.importDate}" class="btn btn-primary" role="button">Delete</a>
+                                                        <a href="order/delete?ivd=${o.invoice_id}&cid=${o.c.companyid}&pid=${o.p.productid}&a=${o.amount}&c=${o.cost}&idate=${o.importDate}" class="btn btn-primary" role="button">Delete</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -284,7 +284,7 @@
                                 </div>
                                 <div class="col-sm-3">
                                 <c:if test="${requestScope.insert gt 0}">
-                                    <a href="product/insert" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Account</span></a>
+                                    <a href="account/insert" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Account</span></a>
                                     </c:if>
                                 </div>
                             </div>
@@ -339,8 +339,7 @@
                    $(document).ready(function()
                     {
                 $('section:nth-of-type(1)').stop().fadeOut(0, 'linear');
-                $('section:nth-of-type(' + a + ')').stop().fadeIn(400, 'linear'); //show initial friends list
-
+                $('section:nth-of-type(' + a + ')').stop().fadeIn(400, 'linear');
             });
         </script>
     </body>

@@ -26,8 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author BK
  */
-@WebServlet(name = "SearchController", urlPatterns = {"/product/search"})
-public class SearchController extends HttpServlet {
+public class SearchController extends BaseAuthController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -128,7 +127,7 @@ public class SearchController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -142,7 +141,7 @@ public class SearchController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }

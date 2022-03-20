@@ -165,14 +165,14 @@ public class OrderDBContext extends DBContext {
         return null;
     }
 
-    public void updateOrder(Order o) {
+    public void updateOrder(Order o, String pid) {
         String sql = "UPDATE [Order]\n"
                 + "SET [CompanyID] = ?,\n"
                 + "	[ProductID] = ?,\n"
                 + "	[Amount] = ?,\n"
                 + "	[Cost] = ?,\n"
                 + "	[ImportDate] = ?\n"
-                + "	WHERE [Invoice_ID] = ?";
+                + "	WHERE [Invoice_ID] = ? AND [ProductID] = ?";
         PreparedStatement stm = null;
         try {
             stm = connection.prepareStatement(sql);
@@ -181,6 +181,7 @@ public class OrderDBContext extends DBContext {
             stm.setInt(3, o.getAmount());
             stm.setFloat(4, o.getCost());
             stm.setString(5, o.getInvoice_id());
+            stm.setString(5, pid);
             stm.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);

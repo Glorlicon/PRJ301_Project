@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Weeb's Corp Invoice Management System</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
         <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
@@ -24,7 +24,7 @@
                 <img src="../img/SRS2.png" width="30" height="30" class="d-inline-block align-top" alt="">
                 Updating Product
             </a>
-            <a href="search" class="btn btn-success my-2 my-sm-0" data-toggle="modal"><i class="material-icons arrow_back">&#xe5c4;</i> <span>Return</span></a>
+            <a href="../search" class="btn btn-success my-2 my-sm-0" data-toggle="modal"><i class="material-icons arrow_back">&#xe5c4;</i> <span>Return</span></a>
         </nav>
 
         <!-- copy of input fields group -->

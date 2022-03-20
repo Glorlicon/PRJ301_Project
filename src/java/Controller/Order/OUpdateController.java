@@ -5,6 +5,7 @@
  */
 package Controller.Order;
 
+import Controller.BaseAuthController;
 import DBContext.AccountDBContext;
 import DBContext.CompanyDBContext;
 import DBContext.OrderDBContext;
@@ -40,21 +41,20 @@ public class OUpdateController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String company = request.getParameter("company");
+        String productid = request.getParameter("pid");
         String product = request.getParameter("product");
         String amount = request.getParameter("Amount");
         Float price = Float.parseFloat(request.getParameter("Cost"));
         Date date = Date.valueOf(request.getParameter("Date"));
         OrderDBContext odb = new OrderDBContext();
-        String invoiceid = request.getParameter("vid");
         Order o = new Order();
-        o.setInvoice_id(invoiceid);
         o.getC().setCompanyid(company);
         o.getP().setProductid(product);
         o.setAmount(Integer.parseInt(amount));
         o.setCost(price);
         o.setImportDate(date);
-        odb.updateOrder(o);
-        response.sendRedirect("../order/search");
+        odb.updateOrder(o, productid);
+        response.sendRedirect(request.getContextPath() + "/search");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

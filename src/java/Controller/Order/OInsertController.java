@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author BK
  */
-public class OInsertController extends HttpServlet {
+public class OInsertController extends BaseAuthController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -76,7 +76,7 @@ public class OInsertController extends HttpServlet {
 
             odb.AddOrder(InvoiceID, company[i], product[i], amounts[i], prices[i], Date.valueOf(date[i]));
         }
-        response.sendRedirect("../search");
+        response.sendRedirect(request.getContextPath() + "/search");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -89,7 +89,7 @@ public class OInsertController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         CompanyDBContext cdb = new CompanyDBContext();
         ProductDBContext pdb = new ProductDBContext();
@@ -109,7 +109,7 @@ public class OInsertController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }

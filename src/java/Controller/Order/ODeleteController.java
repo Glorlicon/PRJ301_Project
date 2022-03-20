@@ -5,6 +5,7 @@
  */
 package Controller.Order;
 
+import Controller.BaseAuthController;
 import DBContext.OrderDBContext;
 import Entity.Order;
 import java.io.IOException;
@@ -32,13 +33,13 @@ public class ODeleteController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String company = request.getParameter("company");
-        String product = request.getParameter("product");
-        String amount = request.getParameter("Amount");
-        Float price = Float.parseFloat(request.getParameter("Cost"));
-        Date date = Date.valueOf(request.getParameter("Date"));
+        String company = request.getParameter("cid");
+        String product = request.getParameter("pid");
+        String amount = request.getParameter("a");
+        Float price = Float.parseFloat(request.getParameter("c"));
+        Date date = Date.valueOf(request.getParameter("idate"));
         OrderDBContext odb = new OrderDBContext();
-        String invoiceid = request.getParameter("vid");
+        String invoiceid = request.getParameter("ivd");
         Order o = new Order();
         o.setInvoice_id(invoiceid);
         o.getC().setCompanyid(company);
@@ -47,6 +48,7 @@ public class ODeleteController extends HttpServlet {
         o.setCost(price);
         o.setImportDate(date);
         odb.deleteOrder(o);
+        response.sendRedirect("/search");
         }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

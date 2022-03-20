@@ -5,6 +5,7 @@
  */
 package Controller.Company;
 
+import Controller.BaseAuthController;
 import DBContext.CompanyDBContext;
 import DBContext.ProductDBContext;
 import Entity.Company;
@@ -21,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author BK
  */
-public class CInsertController extends HttpServlet {
+public class CInsertController extends BaseAuthController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -59,7 +60,7 @@ public class CInsertController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         CompanyDBContext cdb = new CompanyDBContext();
         ArrayList<Company> company = cdb.GetCompany();
@@ -76,14 +77,16 @@ public class CInsertController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String companyid = request.getParameter("companyid");
-        String companyname = request.getParameter("companyname");
+        String[] companyid = request.getParameterValues("companyid");
+        String[] companyname = request.getParameterValues("companyname");
 
         CompanyDBContext cdb = new CompanyDBContext();
-        cdb.addCompany(companyid, companyname);
-        response.sendRedirect("../search");
+        for (int i = 0; i<companyid.length; i++){
+        cdb.addCompany(companyid[i], companyname[i]);
+        }
+        response.sendRedirect("search");
     }
 
     /**

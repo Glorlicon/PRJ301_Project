@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller.Product;
+package Controller.Account;
 
 import Controller.BaseAuthController;
-import DBContext.ProductDBContext;
-import Entity.Product;
+import DBContext.AccountDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author BK
  */
-public class PInsertController extends BaseAuthController {
+public class AInsertController extends BaseAuthController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +37,10 @@ public class PInsertController extends BaseAuthController {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet PInsertController</title>");            
+            out.println("<title>Servlet AInsertController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet PInsertController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AInsertController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,10 +58,7 @@ public class PInsertController extends BaseAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDBContext cdb = new ProductDBContext();
-        ArrayList<Product> product = cdb.GetProduct();
-        request.setAttribute("product", product);
-        request.getRequestDispatcher("/view/product/insert.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/account/insert.jsp").forward(request, response);
     }
 
     /**
@@ -77,12 +72,20 @@ public class PInsertController extends BaseAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String productid = request.getParameter("productid");
-        String productname = request.getParameter("productname");
-
-        ProductDBContext cdb = new ProductDBContext();
-        cdb.addProduct(productid, productname);
-        response.sendRedirect("search");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String permission = request.getParameter("permission");
+        AccountDBContext adb = new AccountDBContext();
+        adb.addAccount(username, password);
+        if (permission.equalsIgnoreCase("admin")){
+            adb.addpermission(username, 2);
+        } else if (permission.equalsIgnoreCase("moderator")){
+            adb.addpermission(username, 3);
+        } else if (permission.equalsIgnoreCase("user")){
+            adb.addpermission(username, 4);
+        }
+        
+        response.sendRedirect(request.getContextPath() + "/search");
     }
 
     /**

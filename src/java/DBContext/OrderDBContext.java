@@ -165,14 +165,14 @@ public class OrderDBContext extends DBContext {
         return null;
     }
 
-    public void updateOrder(Order o) {
+    public void updateOrder(Order o, Order o2) {
         String sql = "UPDATE [Order]\n"
-                + "SET [CompanyID] = ?,\n"
-                + "	[ProductID] = ?,\n"
-                + "	[Amount] = ?,\n"
-                + "	[Cost] = ?,\n"
-                + "	[ImportDate] = ?\n"
-                + "	WHERE [Invoice_ID] = ?";
+                + "SET [CompanyID] = ?\n"
+                + "	,[ProductID] = ?\n"
+                + "	,[Amount] = ?\n"
+                + "	,[Cost] = ?\n"
+                + "	,[ImportDate] = ?\n"
+                + "	WHERE [Invoice_ID] = ? AND [ProductID] = ?";
         PreparedStatement stm = null;
         try {
             stm = connection.prepareStatement(sql);
@@ -180,7 +180,9 @@ public class OrderDBContext extends DBContext {
             stm.setString(2, o.getP().getProductid());
             stm.setInt(3, o.getAmount());
             stm.setFloat(4, o.getCost());
-            stm.setString(5, o.getInvoice_id());
+            stm.setDate(5, o.getImportDate());
+            stm.setString(6, o2.getInvoice_id());
+            stm.setString(7, o2.getP().getProductid());
             stm.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
@@ -205,21 +207,12 @@ public class OrderDBContext extends DBContext {
 
     public void deleteOrder(Order o) {
         String sql = "DELETE FROM [Order]\n"
-                + "WHERE [Invoice_ID] = ?,\n"
-                + "	[CompanyID] =?,\n"
-                + "	[ProductID] =?,\n"
-                + "	[Amount] = ?,\n"
-                + "	[Cost] = ?,\n"
-                + "	[ImportDate] = ?";
+                + "WHERE [Invoice_ID] = ? AND [ProductID] =?";
         PreparedStatement stm = null;
         try {
             stm = connection.prepareStatement(sql);
             stm.setString(1, o.getInvoice_id());
-            stm.setString(2, o.getC().getCompanyid());
-            stm.setString(3, o.getP().getProductid());
-            stm.setInt(4, o.getAmount());
-            stm.setFloat(5, o.getCost());
-            stm.setDate(6, o.getImportDate());
+            stm.setString(2, o.getP().getProductid());
             
             stm.executeUpdate();
         } catch (SQLException ex) {

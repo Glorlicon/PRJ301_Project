@@ -36,7 +36,7 @@
                     <div class="row"> 
                         <div class="col" style="text-align: center">Redirecting shortly</div>
                     </div>
-                    <% response.setHeader("Refresh", "5;url=product/search");%>
+                    <% response.setHeader("Refresh", "5;url=search");%>
                 </c:if>
                 <c:if test="${empty account}">
                     <div class="col" style="text-align: center">Login Failed!</div>

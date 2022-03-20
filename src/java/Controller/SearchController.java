@@ -6,9 +6,13 @@
 package Controller;
 
 import DBContext.AccountDBContext;
+import DBContext.CompanyDBContext;
 import DBContext.OrderDBContext;
+import DBContext.ProductDBContext;
 import Entity.Account;
+import Entity.Company;
 import Entity.Order;
+import Entity.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -22,8 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author BK
  */
-@WebServlet(name = "SearchController", urlPatterns = {"/product/search"})
-public class SearchController extends HttpServlet {
+public class SearchController extends BaseAuthController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,10 +45,20 @@ public class SearchController extends HttpServlet {
             username = "";
         } else username = account.getUsername();
         
-        int page = 1;
+        int ppage = 1, cpage = 1, opage = 1, apage = 1;
+
         int recordsPerPage = 10;
-        if (request.getParameter("page") != null) {
-            page = Integer.parseInt(request.getParameter("page"));
+        if (request.getParameter("ppage") != null) {
+            ppage = Integer.parseInt(request.getParameter("ppage"));
+        }
+        if (request.getParameter("cpage") != null) {
+            cpage = Integer.parseInt(request.getParameter("cpage"));
+        }
+        if (request.getParameter("opage") != null) {
+            opage = Integer.parseInt(request.getParameter("opage"));
+        }
+        if (request.getParameter("apage") != null) {
+            apage = Integer.parseInt(request.getParameter("opage"));
         }
 
         String raw_ivd = request.getParameter("ivd");
@@ -54,21 +67,53 @@ public class SearchController extends HttpServlet {
         }
         OrderDBContext odb = new OrderDBContext();
         AccountDBContext adb = new AccountDBContext();
-        ArrayList<Order> orders = odb.OrderPaging(page, recordsPerPage, raw_ivd);
+        CompanyDBContext cdb = new CompanyDBContext();
+        ProductDBContext pdb = new ProductDBContext();
+        ArrayList<Order> orders = odb.OrderPaging(opage, recordsPerPage, raw_ivd);
+        request.setAttribute("order", orders);
+        ArrayList<Company> coms = cdb.CompanyPaging(cpage, recordsPerPage);
+        request.setAttribute("coms", coms);
+        ArrayList<Product> prods = pdb.ProductPaging(ppage, recordsPerPage);
+        request.setAttribute("prods", prods);
+        ArrayList<Account> accs = adb.getaccounts();
+        request.setAttribute("accs", accs);
+        String rel = request.getParameter("rel");
+        if (rel == null || rel.isEmpty()){
+            rel = "1";
+        }
         int  update = adb.getPermission(username, "/product/update");
         int  insert = adb.getPermission(username, "/product/insert");
         int  delete = adb.getPermission(username, "/product/delete");
+        int  aupdate = adb.getPermission(username, "/account/insert");
         ArrayList<Order> invoiceid = odb.GetSerperateInvoice();
-        int noOfRecords = odb.GetNoOfRecord();
-        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
-        request.setAttribute("order", orders);
-        request.setAttribute("noOfPages", noOfPages);
-        request.setAttribute("currentPage", page);
+        int onoOfRecords = odb.GetNoOfRecord();
+        int cnoOfRecords = cdb.GetNoOfRecord();
+        int pnoOfRecords = pdb.GetNoOfRecord();
+        int anoOfRecords = adb.GetNoOfRecord();
+        int onoOfPages = (int) Math.ceil(onoOfRecords * 1.0 / recordsPerPage);
+        int pnoOfPages = (int) Math.ceil(pnoOfRecords * 1.0 / recordsPerPage);
+        int cnoOfPages = (int) Math.ceil(cnoOfRecords * 1.0 / recordsPerPage);
+        int anoOfPages = (int) Math.ceil(anoOfRecords * 1.0 / recordsPerPage);
+        
+        request.getSession().setAttribute("rel", rel);
+        request.setAttribute("onoOfRecords", onoOfRecords);
+        request.setAttribute("cnoOfRecords", cnoOfRecords);
+        request.setAttribute("pnoOfRecords", pnoOfRecords);
+        request.setAttribute("anoOfRecords", anoOfRecords);
+        request.setAttribute("ocurrentPage", opage);
+        request.setAttribute("pcurrentPage", ppage);
+        request.setAttribute("ccurrentPage", cpage);
+        request.setAttribute("acurrentPage", apage);
+        request.setAttribute("onoOfPages", onoOfPages);
+        request.setAttribute("pnoOfPages", pnoOfPages);
+        request.setAttribute("cnoOfPages", cnoOfPages);
+        request.setAttribute("anoOfPages", anoOfPages);
         request.setAttribute("invoice", invoiceid);
         request.setAttribute("ivd", raw_ivd);
         request.setAttribute("update", update);
         request.setAttribute("insert", insert);
         request.setAttribute("delete", delete);
+        request.setAttribute("aupdate", aupdate);
         request.setAttribute("account", account);
          //response.getWriter().println(update);
         request.getRequestDispatcher("/home.jsp").forward(request, response); // Forward to Search.jsp
@@ -84,7 +129,7 @@ public class SearchController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -98,7 +143,7 @@ public class SearchController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }

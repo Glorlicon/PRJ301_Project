@@ -9,36 +9,84 @@
         <servlet-class>Controller.LoginController</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>OInsertController</servlet-name>
+        <servlet-class>Controller.Order.OInsertController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OUpdateController</servlet-name>
+        <servlet-class>Controller.Order.OUpdateController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ODeleteController</servlet-name>
+        <servlet-class>Controller.Order.ODeleteController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CInsertController</servlet-name>
+        <servlet-class>Controller.Company.CInsertController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CUpdateController</servlet-name>
+        <servlet-class>Controller.Company.CUpdateController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CDeleteController</servlet-name>
+        <servlet-class>Controller.Company.CDeleteController</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>PInsertController</servlet-name>
         <servlet-class>Controller.Product.PInsertController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>PUpdateController</servlet-name>
-        <servlet-class>Controller.Product.PUpdateController</servlet-class>
+        <servlet-name>CSearchController</servlet-name>
+        <servlet-class>Controller.Company.CSearchController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>PDeleteController</servlet-name>
-        <servlet-class>Controller.Product.PDeleteController</servlet-class>
+        <servlet-name>AInsertController</servlet-name>
+        <servlet-class>Controller.Account.AInsertController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SearchController</servlet-name>
-        <url-pattern>/product/search</url-pattern>
+        <url-pattern>/search</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>OInsertController</servlet-name>
+        <url-pattern>/order/insert</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OUpdateController</servlet-name>
+        <url-pattern>/order/update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ODeleteController</servlet-name>
+        <url-pattern>/order/delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CInsertController</servlet-name>
+        <url-pattern>/company/insert</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CUpdateController</servlet-name>
+        <url-pattern>/company/update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CDeleteController</servlet-name>
+        <url-pattern>/company/delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>PInsertController</servlet-name>
         <url-pattern>/product/insert</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>PUpdateController</servlet-name>
-        <url-pattern>/product/update</url-pattern>
+        <servlet-name>CSearchController</servlet-name>
+        <url-pattern>/company/search</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>PDeleteController</servlet-name>
-        <url-pattern>/product/delete</url-pattern>
+        <servlet-name>AInsertController</servlet-name>
+        <url-pattern>/account/insert</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -12,7 +12,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="Bk" />
-        <title>Simple Sidebar - Start Bootstrap Template</title>
+        <title>Weeb's Corp Invoice Management System</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -20,6 +20,7 @@
         <link href="css/styles.css" rel="stylesheet" />
         <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+        <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.js"></script>
         <script>
             function submitForm()
             {
@@ -39,13 +40,13 @@
                                     <div class="sidebar-heading border-bottom bg-light">Hello ${sessionScope.account.username}</div>
                                 </c:if>
                                     <div class="list-group list-group-flush">
-                        <a class="list-group-item list-group-item-action list-group-item-light p-3" data-rel="1">Dashboard</a>
-                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="2">Company</a>
-                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="3">Product</a>
-                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="4">Account</a>
-                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="5">Profile</a>
-                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" data-rel="6">Status</a>
-                        </ul>
+           <a class="list-group-item list-group-item-action list-group-item-light p-3" href="?rel=1&opage=${requestScope.ocurrentPage}&cpage=${requestScope.ccurrentPage}&ppage=${requestScope.pcurrentPage}&apage=${requestScope.acurrentPage}" data-rel="1">Dashboard</a>
+                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="?rel=2&opage=${requestScope.ocurrentPage}&cpage=${requestScope.ccurrentPage}&ppage=${requestScope.pcurrentPage}&apage=${requestScope.acurrentPage}" data-rel="2">Company</a>
+                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="?rel=3&opage=${requestScope.ocurrentPage}&cpage=${requestScope.ccurrentPage}&ppage=${requestScope.pcurrentPage}&apage=${requestScope.acurrentPage}" data-rel="3">Product</a>
+                        <c:if test="${requestScope.aupdate gt 0}">
+                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="?rel=4&opage=${requestScope.ocurrentPage}&cpage=${requestScope.ccurrentPage}&ppage=${requestScope.pcurrentPage}&apage=${requestScope.acurrentPage}" data-rel="4">Account</a>
+                                            </c:if>
+                            </ul>
                     </div>
                 </nav>
             </div>
@@ -58,22 +59,12 @@
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
-                                <li class="nav-item active"><a class="nav-link" href="#!">Home</a></li>
                                  <c:if test="${empty account}">
-                                <li class="nav-item"><a class="nav-link" href="../login">Login</a></li>
+                                <li class="nav-item"><a class="nav-link" href="login?method=login">Login</a></li>
                                 </c:if>
                                      <c:if test="${not empty account}">
-                                         <li class="nav-item"><a class="nav-link" href="../login">Logout</a></li>
+                                         <li class="nav-item"><a class="nav-link" href="login?method=logout">Logout</a></li>
                                          </c:if>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="#!">Action</a>
-                                        <a class="dropdown-item" href="#!">Another action</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#!">Something else here</a>
-                                    </div>
-                                </li>
                             </ul>
                         </div>
                     </div>
@@ -84,11 +75,11 @@
                         <article>
                             <div class="row">
                                 <div class="col-sm-9">
-                                    <h2>Manage <b>Products</b></h2>
+                                    <h2>Manage <b>Invoice</b></h2>
                                 </div>
                                 <div class="col-sm-3">
                                 <c:if test="${requestScope.insert gt 0}">
-                                    <a href="insert" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Products</span></a>
+                                    <a href="order/insert" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Order</span></a>
                                     </c:if>
                                 </div>
                             </div>
@@ -103,7 +94,7 @@
                 </c:forEach>
             </select>
         </form>
-                            <h1 class="mt-4">Product Table</h1>
+                            <h1 class="mt-4">Invoice Table</h1>
                             <c:if test="${requestScope.order.size() gt 0}">
                                 <table class="table">
                                     <thead class="thead-dark">
@@ -127,7 +118,7 @@
                                                 <td><fmt:formatDate pattern = "yyyy/MMM/dd" 
                                                                 value = "${o.importDate}" /></td>
                                                         <c:if test="${requestScope.update gt 0}">
-                                                        <td><a href="update?ivd=${o.invoice_id}&cid=${o.c.companyid}&pid=${o.p.productid}&a=${o.amount}&c=${o.cost}&idate=${o.importDate}" class="btn btn-primary" data-toggle="modal"> Update</td>
+                                                        <td><a href="order/update?ivd=${o.invoice_id}&cid=${o.c.companyid}&pid=${o.p.productid}&a=${o.amount}&c=${o.cost}&idate=${o.importDate}" class="btn btn-primary" data-toggle="modal"> Update</td>
                                                     </c:if>
                                         <c:if test="${requestScope.delete gt 0}">
                                         <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mymodal${o.invoice_id}${o.p.productid}${o.importDate}">Delete</button>
@@ -135,7 +126,7 @@
                                             <div class="modal-dialog">
                                                                            <div class="modal-content">
                                                                            <div class="modal-header">
-                                                                           <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                                           <h5 class="modal-title" id="exampleModalLabel">Deleting Entry</h5>
                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                           </div>                                                
                                                       <div class="modal-body">
@@ -143,7 +134,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Return</button>
-                                                        <a href="delete?ivd=${o.invoice_id}&cid=${o.c.companyid}&pid=${o.p.productid}&a=${o.amount}&c=${o.cost}&idate=${o.importDate}" class="btn btn-primary" role="button">Delete</a>
+                                                        <a href="order/delete?ivd=${o.invoice_id}&cid=${o.c.companyid}&pid=${o.p.productid}&a=${o.amount}&c=${o.cost}&idate=${o.importDate}" class="btn btn-primary" role="button">Delete</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -155,20 +146,187 @@
                                         </c:forEach>
                                     </tbody>
                                 </table>
+                                
                             </c:if>
+                                <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item disabled">
+                                   </li>
+                          <c:forEach begin="1" end="${requestScope.onoOfPages}" varStatus="loop">
+                                   <li class="page-item ${(loop.index==requestScope.ocurrentPage)?"active":""}" ${(loop.index==requestScope.ocurrentPage)?"":""}><a class="page-link" href="search?rel=${sessionScope.rel}&opage=${loop.index}&cpage=$${requestScope.ccurrentPage}&ppage=${requestScope.pcurrentPage}&apage=${requestScope.acurrentPage}">${loop.index}</a></li>
+                                   </c:forEach>
+                                   <li class="page-item">
+                                   </li>
+                                 </ul>
+                               </nav>
                             <c:if test="${requestScope.order.size() eq 0}">
                                 No record to display. <br/>
                             </c:if>
-                            <div id="containerbot" class="pagger"></div>
+                            <div id="ocontainerbot" class="pagger"></div>
                         </article>
                     </section>
 
                     <section>
                         <article>
-                            <h1 class="mt-4"> Hello</h1>
-                            <p>Hi it worked!.</p>
+                        <div class="row">
+                                
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h2>Manage <b>Company</b></h2>
+                                </div>
+                                <div class="col-sm-3">
+                                <c:if test="${requestScope.insert gt 0}">
+                                   <a href="company/insert" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Company</span></a>
+                                    </c:if>
+                                </div>
+                            </div>
+                            <h1 class="mt-4">Company Table</h1>
+                            <c:if test="${requestScope.coms.size() gt 0}">
+                                <table class="table">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <td scope="col">Company Name</td>
+                                            <td scope="col">Company ID</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <div class="container">
+                                        <c:forEach items="${requestScope.coms}" var="c">
+                                            <article class="port">
+                                            <tr>
+                                                <td>${c.company}</td>
+                                                <td>${c.companyid}</td>
+                                            </tr>
+                                            </article>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </c:if>
+                            <c:if test="${requestScope.coms.size() eq 0}">
+                                No record to display. <br/>
+                            </c:if>
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item disabled">
+                                   </li>
+                          <c:forEach begin="1" end="${requestScope.cnoOfPages}" varStatus="loop">
+                                      <li class="page-item ${(loop.index==requestScope.ccurrentPage)?"active":""}" ${(loop.index==requestScope.ccurrentPage)?"":""}><a class="page-link" href="search?rel=${sessionScope.rel}&opage=${requestScope.ocurrentPage}&cpage=${loop.index}&ppage=${requestScope.pcurrentPage}&apage=${requestScope.acurrentPage}">${loop.index}</a></li>
+                                   </c:forEach>
+                                   <li class="page-item">
+                                   </li>
+                                 </ul>
+                               </nav>
                         </article>
                     </section>
+                    
+                    
+                    
+                    <section>
+                        <article>
+                        <div class="row">
+                                
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h2>Manage <b>Product</b></h2>
+                                </div>
+                                <div class="col-sm-3">
+                                <c:if test="${requestScope.insert gt 0}">
+                                    <a href="product/insert" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Product</span></a>
+                                    </c:if>
+                                </div>
+                            </div>
+                            <h1 class="mt-4">Product Table</h1>
+                            <c:if test="${requestScope.prods.size() gt 0}">
+                                <table class="table">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <td scope="col">Product Name</td>
+                                            <td scope="col">Product ID</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="${requestScope.prods}" var="p">
+                                            <tr>
+                                                <td>${p.productname}</td>
+                                                <td>${p.productid}</td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </c:if>
+                                <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item disabled">
+                                   </li>
+                          <c:forEach begin="1" end="${requestScope.pnoOfPages}" varStatus="loop">
+                                   <li class="page-item ${(loop.index==requestScope.pcurrentPage)?"active":""}" ${(loop.index==requestScope.pcurrentPage)?"":""}><a class="page-link" href="search?rel=${sessionScope.rel}&opage=${requestScope.ocurrentPage}&cpage=${requestScope.ccurrentPage}&ppage=${loop.index}&apage=${requestScope.acurrentPage}">${loop.index}</a></li>
+                                   </c:forEach>
+                                   <li class="page-item">
+                                   </li>
+                                 </ul>
+                               </nav>
+                            <c:if test="${requestScope.coms.size() eq 0}">
+                                No record to display. <br/>
+                            </c:if>
+                            
+                        </article>
+                    </section>
+                    
+                    <c:if test="${requestScope.aupdate gt 0}">
+                    <section>
+                        <article>
+                        <div class="row">
+                                
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h2>Manage <b>Account</b></h2>
+                                </div>
+                                <div class="col-sm-3">
+                                <c:if test="${requestScope.insert gt 0}">
+                                    <a href="account/insert" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Account</span></a>
+                                    </c:if>
+                                </div>
+                            </div>
+                            <h1 class="mt-4">Account Table</h1>
+                            <c:if test="${requestScope.accs.size() gt 0}">
+                                <table class="table">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <td scope="col">Account Name</td>
+                                            <td scope="col">Permission</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="${requestScope.accs}" var="a">
+                                            <tr>
+                                                <td>${a.username}</td>
+                                                <td>${a.permission}</td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </c:if>
+                                <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item disabled">
+                                   </li>
+                          <c:forEach begin="1" end="${requestScope.anoOfPages}" varStatus="loop">
+                                      <li class="page-item ${(loop.index==requestScope.acurrentPage)?"active":""}" ${(loop.index==requestScope.acurrentPage)?"":""}><a class="page-link" href="search?rel=${sessionScope.rel}&opage=${requestScope.ocurrentPage}&cpage=${requestScope.ccurrentPage}&ppage=${requestScope.pcurrentPage}&apage=${loop.index}">${loop.index}</a></li>
+                                   </c:forEach>
+                                   <li class="page-item">
+                                   </li>
+                                 </ul>
+                               </nav>
+                            <c:if test="${requestScope.accs.size() eq 0}">
+                                No record to display. <br/>
+                            </c:if>
+                            
+                        </article>
+                    </section>
+        </c:if>
                 </div>
             </div>
         </div>
@@ -178,14 +336,14 @@
         <script src="../js/scripts.js"></script>
         <script src="js/scripts.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <script>pagger("containerbot",${requestScope.currentPage},${requestScope.noOfPages},3);</script>
-        <script>
-            
-            (function ($) {
-                $('nav a').click(function () {
-                    $('section:nth-of-type(' + $(this).data('rel') + ')').stop().fadeIn(400, 'linear').siblings('section').stop().fadeOut(0, 'linear');
-                });
-            })(jQuery);
+        <script>    
+
+                    var a = ${sessionScope.rel}
+                   $(document).ready(function()
+                    {
+                $('section:nth-of-type(1)').stop().fadeOut(0, 'linear');
+                $('section:nth-of-type(' + a + ')').stop().fadeIn(400, 'linear');
+            });
         </script>
     </body>
 </html>

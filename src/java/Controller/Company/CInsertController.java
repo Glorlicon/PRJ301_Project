@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller.Product;
+package Controller.Company;
 
 import Controller.BaseAuthController;
+import DBContext.CompanyDBContext;
 import DBContext.ProductDBContext;
+import Entity.Company;
 import Entity.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author BK
  */
-public class PInsertController extends BaseAuthController {
+public class CInsertController extends BaseAuthController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +41,10 @@ public class PInsertController extends BaseAuthController {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet PInsertController</title>");            
+            out.println("<title>Servlet CInsertController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet PInsertController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CInsertController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,10 +62,10 @@ public class PInsertController extends BaseAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDBContext cdb = new ProductDBContext();
-        ArrayList<Product> product = cdb.GetProduct();
-        request.setAttribute("product", product);
-        request.getRequestDispatcher("/view/product/insert.jsp").forward(request, response);
+        CompanyDBContext cdb = new CompanyDBContext();
+        ArrayList<Company> company = cdb.GetCompany();
+        request.setAttribute("company", company);
+        request.getRequestDispatcher("/view/company/insert.jsp").forward(request, response);
     }
 
     /**
@@ -77,11 +79,13 @@ public class PInsertController extends BaseAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String productid = request.getParameter("productid");
-        String productname = request.getParameter("productname");
+        String[] companyid = request.getParameterValues("companyid");
+        String[] companyname = request.getParameterValues("companyname");
 
-        ProductDBContext cdb = new ProductDBContext();
-        cdb.addProduct(productid, productname);
+        CompanyDBContext cdb = new CompanyDBContext();
+        for (int i = 0; i<companyid.length; i++){
+        cdb.addCompany(companyid[i], companyname[i]);
+        }
         response.sendRedirect("search");
     }
 

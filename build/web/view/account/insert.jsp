@@ -37,17 +37,29 @@
                     <div class="form-group fieldGroup" style="padding-top:50px">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <label class="input-group-text" for="inputGroupSelect01">Product ID</label>
+                                <label class="input-group-text" for="inputGroupSelect01">Username</label>
                             </div>
-                            <label for="productid" class='sr-only'>Company ID</label>
-                            <input type="text" class='form-control' placeholder='Product ID' name="productid" require autofocus required>
+                            <label for="username" class='sr-only'>Company ID</label>
+                            <input type="text" class='form-control' placeholder='Username' name="username" require autofocus required>
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <label class="input-group-text" for="inputGroupSelect02">Company Name</label>
+                                <label class="input-group-text" for="inputGroupSelect02">Password</label>
                             </div>
-                            <label for="productname" class='sr-only'>Company Name</label>
-                            <input type="text" class='form-control' placeholder='Product Name' name="productname" require autofocus required>
+                            <label for="password" class='sr-only'>Company Name</label>
+                            <input type="text" class='form-control' placeholder='Password' name="password" require autofocus required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect01">Permission</label>
+                            </div>
+                            <select class="custom-select" id="inputGroupSelect01" name="permission" required>
+
+                                <option selected>Choose...</option>
+                                <option value="admin">Admin</option>
+                                <option value="moderator">Moderator</option>
+                                <option value="user">User</option>
+                            </select>
                         </div>
                         <div class="input-group-addon"> 
                             <a href="javascript:void(0)" class="btn btn-success addMore"><span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Add</a>
@@ -60,25 +72,37 @@
 
         <form style="max-width:300px;margin:auto;"action="test" method="POST">
             <div class="form-group fieldGroupCopy" style="display: none;">
-                 <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text" for="inputGroupSelect01">Product ID</label>
-                            </div>
-                            <label for="productid" class='sr-only'>Company ID</label>
-                            <input type="text" class='form-control' placeholder='Product ID' name="productid" require autofocus required>
+                <div class="input-group mb-3">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Username</label>
                         </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text" for="inputGroupSelect02">Company Name</label>
-                            </div>
-                            <label for="productname" class='sr-only'>Company Name</label>
-                            <input type="text" class='form-control' placeholder='Product Name' name="productname" require autofocus required>
+                        <label for="companyid" class='sr-only'>Company ID</label>
+                        <input type="text" class='form-control' placeholder='Company ID' name="companyid" require autofocus required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect02">Password</label>
                         </div>
-            
-                <div class="input-group-addon"> 
-                    <a href="javascript:void(0)" class="btn btn-danger remove"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span>Remove</a>
+                        <label for="companyname" class='sr-only'>Company Name</label>
+                        <input type="text" class='form-control' placeholder='Company Name' name="companyname" require autofocus required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Permission</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect01" name="product" required>
+
+                            <option selected>Choose...</option>
+                            <option value="admin">Admin</option>
+                            <option value="moderator">Moderator</option>
+                            <option value="user">User</option>
+                        </select>
+                    </div>
+                    <div class="input-group-addon"> 
+                        <a href="javascript:void(0)" class="btn btn-danger remove"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span>Remove</a>
+                    </div>
                 </div>
-            </div>
         </form>
         <script>
 

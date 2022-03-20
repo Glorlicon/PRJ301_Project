@@ -30,16 +30,8 @@
         <div class="container" style="padding-top: 20px">
             <div class="row">             
                 <c:set var = "path" value = "${requestScope.url}"/>
-                <c:if test="${not empty account}">
-                    <div class="col" style="text-align: center">Login Successfully!</div>
-                </div>
-                    <div class="row"> 
-                        <div class="col" style="text-align: center">Redirecting shortly</div>
-                    </div>
-                    <% response.setHeader("Refresh", "5;url=search");%>
-                </c:if>
                 <c:if test="${empty account}">
-                    <div class="col" style="text-align: center">Login Failed!</div>
+                    <div class="col" style="text-align: center">Acess Denied!</div>
                     </div> 
                     
                     <% response.setHeader("Refresh", "5;url=login");%>
